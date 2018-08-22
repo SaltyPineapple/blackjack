@@ -11,16 +11,22 @@ playerHand = []
 dealerHand = []
 
 
+def dealPrint(string):
+    for letter in string:
+        print(letter, end=" ")
+        sleep(.5)
+
+
 def dealer():
     while sum(dealerHand) < 17:
         dealerHand.append(deck.pop())
 
 
 def choice():
-    choose = input("Hit? [Y / N]")
+    choose = input("\nHit? [Y / N]")
     if choose == "y":
         playerHand.append(deck.pop())
-        print(playerHand)
+        dealPrint(playerHand)
         if sum(playerHand) < 21:
             choice()
     else:
@@ -33,7 +39,7 @@ def hand():
     dealerHand.append(deck.pop())
     playerHand.append(deck.pop())
     dealerHand.append(deck.pop())
-    print(playerHand)
+    dealPrint(playerHand)
     if choice() == "n":
         return
 
@@ -42,29 +48,39 @@ def game():
     print("Hello welcome to blackjack! Starting cash is $20")
     cash = 20
     play = True
-    while(play):
+    while play:
         wager = int(input("You have $" + str(cash) + ". How much would you like to wager?"))
         hand()
         dealer()
-        print("Dealer:" + str(dealerHand))
-        print("Player:" + str(playerHand))
+        print("\nDealer:" + str(dealerHand))
+        print("\nPlayer:" + str(playerHand))
         if (sum(playerHand) == 21) & (sum(dealerHand) != 21):
-            print("BLACKJACK!")
+            print("\nBLACKJACK!")
+            print("You got $" + str(wager))
             cash = wager + cash
-        elif (sum(dealerHand) == 21) & (sum(playerHand) == 21):
-            print("DEALER BLACKJACK!")
+        elif (sum(dealerHand) == 21) & (sum(playerHand) != 21):
+            print("\nDEALER BLACKJACK!")
+            print("You lost $" + str(wager))
+            cash = cash - wager
         elif sum(playerHand) > 21:
-            print("BUST!")
+            print("\nBUST!")
+            print("You lost $" + str(wager))
             cash = cash - wager
         elif (sum(dealerHand) > 21) & (sum(playerHand) < 21):
-            print("DEALER BUST!")
+            print("\nDEALER BUST!")
+            print("You got $" + str(wager))
             cash = cash + wager
         elif (sum(playerHand) > sum(dealerHand)) & (sum(playerHand) < 21):
-            print("YOU WON!")
+            print("\nYOU WON!")
+            print("You got $" + str(wager))
             cash = cash + wager
         elif (sum(playerHand) < sum(dealerHand)) & (sum(dealerHand) < 21):
-            print("YOU LOST!")
+            print("\nYOU LOST!")
+            print("You lost $" + str(wager))
             cash = cash - wager
+        elif (sum(playerHand) == sum(dealerHand)):
+            print("\nTIE! You get your wager back")
+            cash = cash
         again = input("want to play another hand? [y / n]")
         if again == "n":
             play = False
