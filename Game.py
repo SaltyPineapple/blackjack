@@ -5,7 +5,7 @@ from time import sleep
 """
 ===========================================
                 TO DO
-        1. Sum face cards correctly
+        1. Print face cards correctly
         2. Correct Aces Functionality
         
 ===========================================
