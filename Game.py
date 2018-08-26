@@ -7,15 +7,16 @@ from time import sleep
                 TO DO
         1. Sum face cards correctly
         2. Reset the deck each hand
+        3. Correct Aces Functionality
         
 ===========================================
 """
 
 
-deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+deck = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
+        "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
+        "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
+        "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]
 
 
 playerHand = []
@@ -24,22 +25,18 @@ dealerHand = []
 
 def dealPrint(string):
     for letter in string:
-        if letter == 1:
-            letter = "A"
-        if letter == 11:
-            letter = "J"
-        if letter == 12:
-            letter = "Q"
-        if letter == 13:
-            letter = "K"
         print(letter, end=" ")
         sleep(.6)
 
 
 def Sum(inside):
+    count = -1
     for x in inside:
-        if x > 10:
-            x = 10
+        count += 1
+        if (x == "J") or (x == "Q") or (x == "K"):
+            inside[count] = 10
+        if x == "A":
+            inside[count] = 1
     return sum(inside)
 
 
@@ -106,6 +103,10 @@ def game():
             print("\nDEALER BLACKJACK!")
             print("You lost $" + str(wager))
             cash = cash - wager
+        elif (Sum(playerHand) > 21) & (Sum(dealerHand) > 21):
+            print("DOUBLE BUST!")
+            print("You get your wager back")
+            cash = cash
         elif Sum(playerHand) > 21:
             print("\nBUST!")
             print("You lost $" + str(wager))
@@ -125,7 +126,6 @@ def game():
         elif Sum(playerHand) == Sum(dealerHand):
             print("\nTIE! You get your wager back")
             cash = cash
-
         check = True
         while check:
             again = input("Want to play another hand or run with your money? [y / n]")
@@ -137,6 +137,7 @@ def game():
                 if again == "y":
                     playerHand.clear()
                     dealerHand.clear()
+                    check = False
                 else:
                     print("Sorry I didn't catch that")
 
