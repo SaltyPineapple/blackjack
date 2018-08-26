@@ -6,8 +6,7 @@ from time import sleep
 ===========================================
                 TO DO
         1. Sum face cards correctly
-        2. Reset the deck each hand
-        3. Correct Aces Functionality
+        2. Correct Aces Functionality
         
 ===========================================
 """
@@ -18,10 +17,15 @@ deck = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
         "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K",
         "A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]
 
-
+deckActive = []
 playerHand = []
 dealerHand = []
 
+
+def resetDeck():
+    global deckActive
+    deckActive = deck.copy()
+    random.shuffle(deckActive)
 
 def dealPrint(string):
     for letter in string:
@@ -42,13 +46,13 @@ def Sum(inside):
 
 def dealer():
     while Sum(dealerHand) < 17:
-        dealerHand.append(deck.pop())
+        dealerHand.append(deckActive.pop())
 
 
 def choice():
     choose = input("\nHit? [Y / N]")
     if choose == "y":
-        playerHand.append(deck.pop())
+        playerHand.append(deckActive.pop())
         print("\nPlayer:", end="")
         dealPrint(playerHand)
         if Sum(playerHand) < 21:
@@ -62,11 +66,11 @@ def choice():
 
 
 def hand():
-    random.shuffle(deck)
-    playerHand.append(deck.pop())
-    dealerHand.append(deck.pop())
-    playerHand.append(deck.pop())
-    dealerHand.append(deck.pop())
+    resetDeck()
+    playerHand.append(deckActive.pop())
+    dealerHand.append(deckActive.pop())
+    playerHand.append(deckActive.pop())
+    dealerHand.append(deckActive.pop())
     print("\nPlayer: ", end="")
     dealPrint(playerHand)
     print("\nDealer: ", end="")
@@ -137,6 +141,7 @@ def game():
                 if again == "y":
                     playerHand.clear()
                     dealerHand.clear()
+                    resetDeck()
                     check = False
                 else:
                     print("Sorry I didn't catch that")
@@ -145,11 +150,3 @@ def game():
 
 
 game()
-
-
-
-
-
-
-
-
