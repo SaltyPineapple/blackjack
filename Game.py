@@ -2,6 +2,16 @@ import random
 import math
 from time import sleep
 
+"""
+===========================================
+                TO DO
+        1. Sum face cards correctly
+        2. Reset the deck each hand
+        
+===========================================
+"""
+
+
 deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
@@ -47,7 +57,11 @@ def choice():
         if Sum(playerHand) < 21:
             choice()
     else:
-        return "n"
+        if choose == "n":
+            return "n"
+        else:
+            print("This was a yes or no question...")
+            choice()
 
 
 def hand():
@@ -56,9 +70,9 @@ def hand():
     dealerHand.append(deck.pop())
     playerHand.append(deck.pop())
     dealerHand.append(deck.pop())
-    print("\nPlayer:", end="")
+    print("\nPlayer: ", end="")
     dealPrint(playerHand)
-    print("\nDealer:", end="")
+    print("\nDealer: ", end="")
     dealPrint(dealerHand)
 
     if choice() == "n":
@@ -70,7 +84,14 @@ def game():
     cash = 20
     play = True
     while play:
-        wager = int(input("You have $" + str(cash) + ". How much would you like to wager?"))
+        isvalid = True
+        while isvalid:
+            try:
+                wager = int(input("You have $" + str(cash) + ". How much would you like to wager?"))
+                isvalid = False
+            except:
+                print("We don't mess around with fake currency...")
+
         hand()
         dealer()
         print("\nDealer:", end="")
@@ -104,14 +125,22 @@ def game():
         elif Sum(playerHand) == Sum(dealerHand):
             print("\nTIE! You get your wager back")
             cash = cash
-        again = input("want to play another hand? [y / n]")
-        if again == "n":
-            play = False
-        else:
-            playerHand.clear()
-            dealerHand.clear()
 
-    print("Thanks for playing! You ended with $" + str(cash))
+        check = True
+        while check:
+            again = input("Want to play another hand or run with your money? [y / n]")
+
+            if again == "n":
+                play = False
+                check = False
+            else:
+                if again == "y":
+                    playerHand.clear()
+                    dealerHand.clear()
+                else:
+                    print("Sorry I didn't catch that")
+
+    print("Thanks for playing! You left with $" + str(cash))
 
 
 game()
