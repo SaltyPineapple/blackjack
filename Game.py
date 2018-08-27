@@ -89,7 +89,10 @@ def game():
         while isvalid:
             try:
                 wager = int(input("You have $" + str(cash) + ". How much would you like to wager?"))
-                isvalid = False
+                if wager > cash:
+                    print("You don't have that much money try again..")
+                else:
+                    isvalid = False
             except:
                 print("We don't mess around with fake currency...")
 
